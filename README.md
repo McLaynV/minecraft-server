@@ -24,8 +24,21 @@ git clone "https://github.com/YOUR_USERNAME/minecraft-server.git" # specify YOUR
 sudo install.sh
 ```
 
+Mods
+====
+
+Fabric mods are supported.
+
 * Download your mods into `/opt/minecraft/server/mods/` and configure them in `/opt/minecraft/server/config/`
 * Restart the service with the new mods: `systemctl restart MineCraft`
+
+Configuration
+=============
+
+* Java memory size `-Xms` and `-Xmx` can be set in
+  * `MineCraft.service` if you run it as a Linux service
+  * `run.sh` if you run it manually on Linux
+  * `run.cmd` if you run it manually on Windows
 
 Debug
 =====
