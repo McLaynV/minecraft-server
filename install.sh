@@ -63,6 +63,6 @@ chmod 644 /opt/minecraft/server/*.jar
 # TODO: configure git credentials
 
 # install service
-ln -s /opt/minecraft/server/minecraft.service /etc/systemd/system/minecraft.service
-systemctl start  minecraft
-systemctl enable minecraft
+ln -s /opt/minecraft/server/MineCraft.service /etc/systemd/system/MineCraft.service
+systemctl start  MineCraft
+systemctl enable MineCraft
