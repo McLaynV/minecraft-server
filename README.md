@@ -24,6 +24,8 @@ git clone "https://github.com/YOUR_USERNAME/minecraft-server.git" # specify YOUR
 sudo install.sh
 ```
 
+* Agree to the EULA by `echo "eula=true" >eula.txt`
+
 Mods
 ====
 
@@ -45,4 +47,5 @@ Configuration
 Debug
 =====
 
+* See the service status by `systemctl status MineCraft`
 * See the logs in `/opt/minecraft/server/logs/`
