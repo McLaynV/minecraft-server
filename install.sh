@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-[[ "$(whoami)" == root ]] || sudo "${0}" "${@}"
+if [[ "$(whoami)" != root ]]; then
+  sudo "${0}" "${@}"
+  exit "${?}"
+fi
 
 # find package manager
 if apt-get --version 2>/dev/null; then
@@ -32,7 +35,7 @@ chown minecraft:crontab /var/spool/cron/crontabs/minecraft
 chmod 600               /var/spool/cron/crontabs/minecraft
 
 # firewall - allow service port
-cat <<EOF >/etc/firewall.d
+cat <<EOF >/etc/firewall.d//MineCraft.xml # TODO: file path
 <?xml version="1.0" encoding="utf-8"?>
 <service>
  <short>MineCraft</short>
