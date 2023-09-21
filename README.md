@@ -13,18 +13,31 @@ A backup is also done after the MineCraft service stops.
 Instructions
 ============
 
+Tested on Ubuntu 22.04 LTS.
+
 * Fork this repo
+* Install git
+  * `apt install git`
+* Create an access token
+  * GitHub > Settings > Developer settings > Personal access tokens > [Genereate new token](https://github.com/settings/personal-access-tokens/new)
+  * Token name: MineCraft
+  * Repository access: Only selected repositories: minecraft-server
+  * Permissions:
+    * Contents: Read and write
+  * Generate token
+    * Copy the value - you will be using it instead of your password
 * Run the following commands
+* Agree to the MineCraft EULA by `echo "eula=true" >eula.txt`
 
 ```bash
 mkdir -p /opt/minecraft/server/mods
 mkdir -p /opt/minecraft/server/config
 cd       /opt/minecraft/server
-git clone "https://github.com/YOUR_USERNAME/minecraft-server.git" # specify YOUR_USERNAME
-sudo install.sh
+git init .
+git remote add -t '*' -f origin "https://github.com/YOUR_USERNAME/minecraft-server.git" # specify YOUR_USERNAME
+git checkout main
+sudo bash install.sh
 ```
-
-* Agree to the EULA by `echo "eula=true" >eula.txt`
 
 Mods
 ====

@@ -5,9 +5,11 @@ if [[ "$(whoami)" != root ]]; then
   exit "${?}"
 fi
 
+chmod 750 *.sh
+
 # find package manager
-if apt-get --version 2>/dev/null; then
-  pac_man=apt-get
+if apt --version 2>/dev/null; then
+  pac_man=apt
 elif dnf --version 2>/dev/null; then
   pac_man=dnf
 else
@@ -23,10 +25,17 @@ function install_package_if_not() {
   "${query[@]}" 2>/dev/null || "${pac_man}" install "${package}" -y
 }
 install_package_if_not "git" git --version
-install_package_if_not "tmux" tmux -V
+#install_package_if_not "tmux" tmux -V
+install_package_if_not "openjdk-17-jre" java -version
+#install_package_if_not "python3" python3 --version
+install_package_if_not "curl" curl --version
 
 # create service user
 useradd -r -m -U -d /opt/minecraft -s /bin/bash minecraft
+
+mkdir -p /opt/minecraft/rcon
+cd /opt/minecraft/rcon
+git clone "https://github.com/barneygale/MCRcon.git"
 
 # crontab for backups
 cron_minutes=30
@@ -35,7 +44,8 @@ chown minecraft:crontab /var/spool/cron/crontabs/minecraft
 chmod 600               /var/spool/cron/crontabs/minecraft
 
 # firewall - allow service port
-cat <<EOF >/etc/firewall.d//MineCraft.xml # TODO: file path
+if firewall-cmd --version; then
+  cat <<EOF >/etc/firewalld/services/MineCraft.xml
 <?xml version="1.0" encoding="utf-8"?>
 <service>
  <short>MineCraft</short>
@@ -43,9 +53,15 @@ cat <<EOF >/etc/firewall.d//MineCraft.xml # TODO: file path
  <port protocol="tcp" port="25565"/>
 </service>
 EOF
-systemctl restart firewalld
-firewall-cmd --permanent --service=MineCraft
-systemctl restart firewalld
+  systemctl restart firewalld
+  firewall-cmd --permanent --service=MineCraft
+  systemctl restart firewalld
+elif ufw --version; then
+  ufw allow 25565/tcp comment 'accept MineCraft'
+else
+  echo "Firewall not supported."
+  exit 1
+fi
 
 (
   cd /opt/minecraft/server
@@ -66,6 +82,7 @@ chmod 644 /opt/minecraft/server/*.jar
 # TODO: configure git credentials
 
 # install service
-ln -s /opt/minecraft/server/MineCraft.service /etc/systemd/system/MineCraft.service
+ln -f -s /opt/minecraft/server/MineCraft.service /etc/systemd/system/MineCraft.service
+systemctl daemon-reload
 systemctl start  MineCraft
 systemctl enable MineCraft
