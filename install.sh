@@ -33,6 +33,10 @@ install_package_if_not "curl" curl --version
 # create service user
 useradd -r -m -U -d /opt/minecraft -s /bin/bash minecraft
 
+# rcon
+# https://wiki.vg/RCON
+# barneygale/MCRcon seems not to work - server registers the command but hangs indefinetelly and doesn't return
+# TODO: test another from https://wiki.vg/RCON
 mkdir -p /opt/minecraft/rcon
 cd /opt/minecraft/rcon
 git clone "https://github.com/barneygale/MCRcon.git" .
