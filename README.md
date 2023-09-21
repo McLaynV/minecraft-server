@@ -17,7 +17,8 @@ Tested on Ubuntu 22.04 LTS.
 
 * Fork this repo
 * Install git
-  * `apt install git`
+  * `sudo apt install git -y`
+  * `sudo dnf install git -y`
 * Create an access token
   * GitHub > Settings > Developer settings > Personal access tokens > [Genereate new token](https://github.com/settings/personal-access-tokens/new)
   * Token name: MineCraft
@@ -27,17 +28,20 @@ Tested on Ubuntu 22.04 LTS.
   * Generate token
     * Copy the value - you will be using it instead of your password
 * Run the following commands
-* Agree to the MineCraft EULA by `echo "eula=true" >eula.txt`
 
 ```bash
-mkdir -p /opt/minecraft/server/mods
-mkdir -p /opt/minecraft/server/config
-cd       /opt/minecraft/server
+mkdir -p /opt/minecraft/server/mods /opt/minecraft/server/config
+cd /opt/minecraft/server
 git init .
 git remote add -t '*' -f origin "https://github.com/YOUR_USERNAME/minecraft-server.git" # specify YOUR_USERNAME
 git checkout main
 sudo bash install.sh
 ```
+
+* Agree to the MineCraft EULA by `echo "eula=true" >eula.txt`
+* Start the service
+  * `systemctl start MineCraft`
+  * `systemctl status MineCraft`
 
 Mods
 ====
@@ -54,7 +58,9 @@ Configuration
   * `MineCraft.service` if you run it as a Linux service
   * `run.sh` if you run it manually on Linux
   * `run.cmd` if you run it manually on Windows
-* `server.properties` - see the [Wiki](https://minecraft.fandom.com/wiki/Server.properties)
+* `server.properties` 
+  * See the [Wiki](https://minecraft.fandom.com/wiki/Server.properties)
+  * Don't forget to change your `rcon` password
 * `server-icon.png` - 64x64 PNG image
 
 Debug

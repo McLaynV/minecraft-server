@@ -27,7 +27,7 @@ function install_package_if_not() {
 install_package_if_not "git" git --version
 #install_package_if_not "tmux" tmux -V
 install_package_if_not "openjdk-17-jre" java -version
-#install_package_if_not "python3" python3 --version
+install_package_if_not "python3" python3 --version
 install_package_if_not "curl" curl --version
 
 # create service user
@@ -35,7 +35,7 @@ useradd -r -m -U -d /opt/minecraft -s /bin/bash minecraft
 
 mkdir -p /opt/minecraft/rcon
 cd /opt/minecraft/rcon
-git clone "https://github.com/barneygale/MCRcon.git"
+git clone "https://github.com/barneygale/MCRcon.git" .
 
 # crontab for backups
 cron_minutes=30

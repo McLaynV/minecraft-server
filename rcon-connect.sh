@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. <(grep rcon </opt/minecraft/server/server.properties | sed 's/\./_/g')
+. <(grep rcon </opt/minecraft/server/server.properties | sed 's/[^=_a-zA-Z0-9]/_/g')
 
 cd /opt/minecraft/rcon
-./demo.py --host=localhost --port="${rcon_port}" --password="${rcon_password}"
+python3 demo.py localhost "${rcon_port}" "${rcon_password}"
