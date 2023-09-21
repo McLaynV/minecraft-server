@@ -33,7 +33,8 @@ Tested on Ubuntu 22.04 LTS.
 mkdir -p /opt/minecraft/server/mods /opt/minecraft/server/config
 cd /opt/minecraft/server
 git init .
-git remote add -t '*' -f origin "https://github.com/YOUR_USERNAME/minecraft-server.git" # specify YOUR_USERNAME
+git_username= # specify YOUR_USERNAME
+git remote add -t '*' -f origin "https://github.com/${git_username}/minecraft-server.git"
 git checkout main
 sudo bash install.sh
 ```
