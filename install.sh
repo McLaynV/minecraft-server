@@ -83,7 +83,7 @@ fi
 
   # download minecraft server fabric loader
   # https://fabricmc.net/use/server/
-  ver_mc=1.20.1
+  ver_mc=1.20.2
   ver_loader=0.14.22
   ver_launcher=0.11.2
   curl -OJ "https://meta.fabricmc.net/v2/versions/loader/${ver_mc}/${ver_loader}/${ver_launcher}/server/jar"
