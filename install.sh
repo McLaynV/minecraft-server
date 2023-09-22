@@ -7,6 +7,8 @@ fi
 
 chmod 750 *.sh
 
+systemctl is-active MineCraft && systemctl stop MineCraft
+
 # find package manager
 if apt --version 2>/dev/null; then
   pac_man=apt
