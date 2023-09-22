@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+sleep 5 # let the server finish
+
 message="$(date +'%F %T') ${*}"
 echo "${message}"
 

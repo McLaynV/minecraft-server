@@ -14,7 +14,7 @@ NoNewPrivileges=true
 WorkingDirectory=/opt/minecraft/server
 ExecStart=java -Xms1G -Xmx4G -jar server.jar nogui
 ExecStop=/opt/minecraft/server/rcon-client/bin/python3 /opt/minecraft/server/rcon-client/stop.py
-ExecStopPost=bash -c 'backup.sh service stop | tee -a /opt/minecraft/server/logs/backup.log'
+ExecStopPost=bash -c '/opt/minecraft/server/backup.sh service stop | tee -a /opt/minecraft/server/logs/backup.log ; exit "${PIPESTATUS[0]}"'
 
 [Install]
 WantedBy=multi-user.target

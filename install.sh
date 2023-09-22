@@ -6,7 +6,6 @@ if [[ "$(whoami)" != root ]]; then
 fi
 
 chmod 750 *.sh
-
 systemctl is-active MineCraft && systemctl stop MineCraft
 
 # find package manager
@@ -36,6 +35,12 @@ install_package_if_not "python3-venv" false
 # create service user
 useradd -r -m -U -d /opt/minecraft -s /bin/bash minecraft
 
+server_ip="$(hostname -I | head -n 1)"
+sudo -u minecraft git config --global --add safe.directory /opt/minecraft/server
+sudo -u minecraft git config --global user.email "server@${server_ip}"
+sudo -u minecraft git config --global user.name "server@${server_ip}"
+sudo -u minecraft git config credential.helper store
+
 # rcon
 # https://wiki.vg/RCON
 # barneygale/MCRcon seems not to work - server registers the command but hangs indefinetelly and doesn't return
@@ -54,7 +59,7 @@ chown minecraft:crontab /var/spool/cron/crontabs/minecraft
 chmod 600               /var/spool/cron/crontabs/minecraft
 
 # firewall - allow service port
-if firewall-cmd --version; then
+if firewall-cmd --version 2>/dev/null; then
   cat <<EOF >/etc/firewalld/services/MineCraft.xml
 <?xml version="1.0" encoding="utf-8"?>
 <service>

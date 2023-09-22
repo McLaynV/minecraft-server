@@ -33,13 +33,16 @@ Tested on Ubuntu 22.04 LTS.
 mkdir -p /opt/minecraft/server/mods /opt/minecraft/server/config
 cd /opt/minecraft/server
 git init .
-git_username= # specify YOUR_USERNAME
+git_username= # specify repo owner username
 git remote add -t '*' -f origin "https://github.com/${git_username}/minecraft-server.git"
 git checkout main
 sudo bash install.sh
 ```
 
-* Agree to the MineCraft EULA by `echo "eula=true" >eula.txt`
+* Agree to the MineCraft EULA
+  * `echo "eula=true" >eula.txt`
+* Initialize credentials store
+  * `sudo -u minecraft /opt/minecraft/server/backup.sh init`
 * Start the service
   * `systemctl start MineCraft`
   * `systemctl status MineCraft`
@@ -61,7 +64,7 @@ Configuration
   * `run.cmd` if you run it manually on Windows
 * `server.properties` 
   * See the [Wiki](https://minecraft.fandom.com/wiki/Server.properties)
-  * Don't forget to change your `rcon` password
+  * Don't forget to change your `rcon` password if the rcon port will be open to the internet
 * `server-icon.png` - 64x64 PNG image
 
 Debug
@@ -69,3 +72,4 @@ Debug
 
 * See the service status by `systemctl status MineCraft`
 * See the logs in `/opt/minecraft/server/logs/`
+* See the logs in `journalctl --unit=MineCraft.service`
