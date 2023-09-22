@@ -29,6 +29,7 @@ install_package_if_not "git" git --version
 install_package_if_not "openjdk-17-jre" java -version
 install_package_if_not "python3" python3 --version
 install_package_if_not "curl" curl --version
+install_package_if_not "python3-venv" false
 
 # create service user
 useradd -r -m -U -d /opt/minecraft -s /bin/bash minecraft
@@ -36,10 +37,13 @@ useradd -r -m -U -d /opt/minecraft -s /bin/bash minecraft
 # rcon
 # https://wiki.vg/RCON
 # barneygale/MCRcon seems not to work - server registers the command but hangs indefinetelly and doesn't return
-# TODO: test another from https://wiki.vg/RCON
-mkdir -p /opt/minecraft/rcon
-cd /opt/minecraft/rcon
-git clone "https://github.com/barneygale/MCRcon.git" .
+(
+  cd /opt/minecraft/server/rcon-client
+  python3 -m venv /opt/minecraft/server/rcon-client
+  source /opt/minecraft/server/rcon-client/bin/activate
+  python3 -m pip install mcipc
+  python3 -m pip install jproperties
+)
 
 # crontab for backups
 cron_minutes=30

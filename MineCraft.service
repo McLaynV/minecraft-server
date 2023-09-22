@@ -13,7 +13,7 @@ PrivateDevices=true
 NoNewPrivileges=true
 WorkingDirectory=/opt/minecraft/server
 ExecStart=java -Xms1G -Xmx4G -jar server.jar nogui
-ExecStop=bash -c '/opt/minecraft/server/rcon-connect.sh <<<stop'
+ExecStop=/opt/minecraft/server/rcon-client/bin/python3 /opt/minecraft/server/rcon-client/stop.py
 ExecStopPost=bash -c 'backup.sh service stop | tee -a /opt/minecraft/server/logs/backup.log'
 
 [Install]
