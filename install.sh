@@ -35,6 +35,8 @@ install_package_if_not "python3-venv" false
 # create service user
 useradd -r -m -U -d /opt/minecraft -s /bin/bash minecraft
 
+# configure git
+chown -R minecraft:minecraft /opt/minecraft
 server_ip="$(hostname -I | head -n 1)"
 sudo -u minecraft git config --global --add safe.directory /opt/minecraft/server
 sudo -u minecraft git config --global user.email "server@${server_ip}"

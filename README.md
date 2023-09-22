@@ -16,6 +16,7 @@ Instructions
 Tested on Ubuntu 22.04 LTS.
 
 * Fork this repo
+* Apply the changes to the parameters in `install.sh` as mentioned above
 * Install git
   * `sudo apt install git -y`
   * `sudo dnf install git -y`
@@ -30,13 +31,14 @@ Tested on Ubuntu 22.04 LTS.
 * Run the following commands
 
 ```bash
+sudo -i
 mkdir -p /opt/minecraft/server/mods /opt/minecraft/server/config
 cd /opt/minecraft/server
 git init .
 git_username= # specify repo owner username
 git remote add -t '*' -f origin "https://github.com/${git_username}/minecraft-server.git"
 git checkout main
-sudo bash install.sh
+bash install.sh
 ```
 
 * Agree to the MineCraft EULA
