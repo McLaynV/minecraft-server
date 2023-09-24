@@ -101,5 +101,4 @@ chmod 644 /opt/minecraft/server/*.jar
 # install service
 ln -f -s /opt/minecraft/server/MineCraft.service /etc/systemd/system/MineCraft.service
 systemctl daemon-reload
-systemctl start  MineCraft
 systemctl enable MineCraft

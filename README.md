@@ -45,17 +45,13 @@ bash install.sh
   * `echo "eula=true" >eula.txt`
 * Initialize credentials store
   * `sudo -u minecraft /opt/minecraft/server/backup.sh init`
+* Mods
+  * Fabric mods are supported.
+    * Download your mods into `/opt/minecraft/server/mods/` 
+    * Configure them in `/opt/minecraft/server/config/`
 * Start the service
   * `systemctl start MineCraft`
   * `systemctl status MineCraft`
-
-Mods
-====
-
-Fabric mods are supported.
-
-* Download your mods into `/opt/minecraft/server/mods/` and configure them in `/opt/minecraft/server/config/`
-* Restart the service with the new mods: `systemctl restart MineCraft`
 
 Configuration
 =============
@@ -68,6 +64,7 @@ Configuration
   * See the [Wiki](https://minecraft.fandom.com/wiki/Server.properties)
   * Don't forget to change your `rcon` password if the rcon port will be open to the internet
 * `server-icon.png` - 64x64 PNG image
+* Mods configuration in `/opt/minecraft/server/config/`
 
 Debug
 =====
