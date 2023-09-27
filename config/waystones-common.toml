@@ -63,7 +63,7 @@ dimensionalWarpAllowList = [  ]
 dimensionalWarpDenyList = [  ]
 
 # If enabled, waystones generated in worldgen are unbreakable.
-generatedWaystonesUnbreakable = false
+generatedWaystonesUnbreakable = true
 
 # Set to false to allow non-creative players to make waystones globally activated for all players.
 globalWaystoneSetupRequiresCreativeMode = true
@@ -72,7 +72,7 @@ globalWaystoneSetupRequiresCreativeMode = true
 leashedDenyList = [ "minecraft:wither" ]
 
 # If enabled, only the owner of a waystone (the one who placed it) can rename it.
-restrictRenameToOwner = false
+restrictRenameToOwner = true
 
 # If enabled, only creative players can place, edit or break waystones. This does NOT disable the crafting recipe.
 restrictToCreative = true
@@ -81,7 +81,7 @@ restrictToCreative = true
 transportLeashed = true
 
 # Whether to take leashed mobs with you when teleporting between dimensions
-transportLeashedDimensional = true
+transportLeashedDimensional = false
 
 [worldGen]
 
@@ -95,7 +95,7 @@ dimensionAllowList = [  ]
 dimensionDenyList = [ "minecraft:overworld", "minecraft:the_nether", "minecraft:the_end" ]
 
 # Ensures that pretty much every village will have a waystone, by spawning it as early as possible. In addition, this means waystones will generally be located in the center of the village.
-forceSpawnInVillages = true
+forceSpawnInVillages = false
 
 # Approximate chunk distance between waystones generated freely in world generation. Set to 0 to disable generation.
 frequency = 0
@@ -124,7 +124,7 @@ globalWaystoneXpCostMultiplier = 0.0
 inventoryButtonXpCostMultiplier = 0.0
 
 # Set to true if experience cost should be inverted, meaning the shorter the distance, the more expensive. Can be used to encourage other methods for short-distance travel.
-inverseXpCost = false
+inverseXpCost = true
 
 # The maximum base xp cost (may be exceeded by multipliers defined below), set to 0 to disable all distance-based XP costs
 maximumBaseXpCost = 0.0
