@@ -3,31 +3,44 @@ About
 
 This is a simple way to setup a MineCraft Fabric server as a Linux service. 
 
-You can configure the versions by setting `ver_mc`, `ver_loader` and `ver_launcher` in the `install.sh` script.
-See the [Fabric server download page](https://fabricmc.net/use/server/) to select the version values.
+It does automatic backups into your Git repository with a set frequency. 
+A backup is also done each time the MineCraft service stops.
 
-It does automatic backups into your Git repository. 
-You can configure the frequency of backups by setting `cron_minutes` in the `install.sh` script.
-A backup is also done after the MineCraft service stops.
+You can configure the versions by adding params to the `install.sh` script.
+You can also configure the frequency of automatic backups.
+See `install.sh --help` for details.
+
 
 Instructions
 ============
 
-Tested on Ubuntu 22.04 LTS.
+GitHub
+------
 
 * Fork this repo
-* Apply the changes to the parameters in `install.sh` as mentioned above
-* Install git
-  * `sudo apt install git -y`
-  * `sudo dnf install git -y`
 * Create an access token
   * GitHub > Settings > Developer settings > Personal access tokens > [Genereate new token](https://github.com/settings/personal-access-tokens/new)
   * Token name: MineCraft
-  * Repository access: Only selected repositories: minecraft-server
+  * Repository access: Only selected repositories: `minecraft-server`
   * Permissions:
     * Contents: Read and write
   * Generate token
     * Copy the value - you will be using it instead of your password
+
+Server
+------
+
+* Prepare a Linux server
+  * Tested on Ubuntu 22.04 LTS.
+  * DigitalOcean gives you $200 to be used during the first 60 days if you register with [this refferal link](https://m.do.co/c/dba1347dcfc8). 
+    Check if the refferal offer still stands on the [DigitalOcean web](https://www.digitalocean.com/referral-program)
+* Install git
+  * `sudo apt install git -y`
+  * `sudo dnf install git -y`
+
+Installation
+------------
+
 * Run the following commands
 
 ```bash
@@ -35,12 +48,17 @@ sudo -i
 mkdir -p /opt/minecraft/server/mods /opt/minecraft/server/config
 cd /opt/minecraft/server
 git init .
-git_username= # specify repo owner username
-git remote add -t '*' -f origin "https://github.com/${git_username}/minecraft-server.git"
-git checkout main
-bash install.sh
+git_repo_owner=                  # specify repo owner username
+git_repo_name=minecraft-server   # specify repo name
+git_branch_name=main             # specify branch name to be checked out and used for backups
+git_username="${git_repo_owner}" # specify your username for which you have generated the access token on GitHub
+git remote add -t '*' -f origin "https://${git_username}@github.com/${git_repo_owner}/${git_repo_name}.git"
+git checkout "${git_branch_name}"
 ```
 
+* Run the installation `sudo bash install.sh [--help]`
+  * Without any params default values are used
+  * Run with `--help` to see the configurable params
 * Agree to the MineCraft EULA
   * `echo "eula=true" >eula.txt`
 * Initialize credentials store
@@ -63,6 +81,7 @@ Configuration
 * `server.properties` 
   * See the [Wiki](https://minecraft.fandom.com/wiki/Server.properties)
   * Don't forget to change your `rcon` password if the rcon port will be open to the internet
+  * You can find your perfect `level-seed` using [ChunkBase seed map](https://www.chunkbase.com/apps/seed-map) or leave it empty to get a random one
 * `server-icon.png` - 64x64 PNG image
 * Mods configuration in `/opt/minecraft/server/config/`
 

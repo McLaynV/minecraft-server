@@ -5,6 +5,61 @@ if [[ "$(whoami)" != root ]]; then
   exit "${?}"
 fi
 
+ver_mc=1.20.2
+ver_loader=0.14.22
+ver_launcher=0.11.2
+cron_minutes=30
+
+for param in "${@}"; do
+  case param in
+    '--help'|'-h'|'help')
+      echo "You can use these params (with different values):"
+      echo ""
+      {
+        echo "|--help|Print this help with previously set values (or defaults) and exit."
+        echo "|--ver_mc=${ver_mc}|Minecraft version. Check available versions on https://fabricmc.net/use/server/"
+        echo "|--ver_loader=${ver_loader}|Fabric loader version. Check available versions on https://fabricmc.net/use/server/"
+        echo "|--ver_launcher=${ver_launcher}|Fabric launcher/installer version. Check available versions on https://fabricmc.net/use/server/"
+        echo "|--cron_minutes=${cron_minutes}|Number of minutes between regular backups"
+      } | column -t -s '|'
+      exit 0
+      ;;
+    '--ver_mc='*)
+      mc_ver="$(sed 's/^[^=]=//' <<<"${param}")"
+      ;;
+    '--ver_loader='*)
+      ver_loader="$(sed 's/^[^=]=//' <<<"${param}")"
+      ;;
+    '--ver_launcher='*)
+      ver_launcher="$(sed 's/^[^=]=//' <<<"${param}")"
+      ;;
+    '--cron_minutes='*)
+      cron_minutes="$(sed 's/^[^=]=//' <<<"${param}")"
+      if ! [[ "${cron_minutes}" =~ ^[0-9]+$ ]]; then
+        echo "Not a number: ${cron_minutes}"
+        exit 1
+      fi  
+      ;;
+    *)
+      echo "Unsupported parameter: ${param}"
+      echo ""
+      "${0}" --help
+      exit 1
+      ;;
+  esac
+done
+
+cat <<EOF
+################################
+# Configured params:
+# 
+# ver_mc=${ver_mc}
+# ver_loader=${ver_loader}
+# ver_launcher=${ver_launcher}
+# cron_minutes=${cron_minutes}
+################################
+EOF
+
 chmod 750 *.sh
 systemctl is-active MineCraft && systemctl stop MineCraft
 
@@ -23,14 +78,17 @@ function install_package_if_not() {
   local package="${1}"
   shift
   local query=("${@}")
+  # no query means failing query
+  [[ "${#query[@]}" == 0 ]] && query=(false)
+  # install the package if the query fails
   "${query[@]}" 2>/dev/null || "${pac_man}" install "${package}" -y
 }
-install_package_if_not "git" git --version
-#install_package_if_not "tmux" tmux -V
+install_package_if_not "git"            git --version
+#install_package_if_not "tmux"           tmux -V
 install_package_if_not "openjdk-17-jre" java -version
-install_package_if_not "python3" python3 --version
-install_package_if_not "curl" curl --version
-install_package_if_not "python3-venv" false
+install_package_if_not "python3"        python3 --version
+install_package_if_not "curl"           curl --version
+install_package_if_not "python3-venv"
 
 # create service user
 useradd -r -m -U -d /opt/minecraft -s /bin/bash minecraft
@@ -55,7 +113,6 @@ sudo -u minecraft git config credential.helper store
 )
 
 # crontab for backups
-cron_minutes=30
 cat                    >/var/spool/cron/crontabs/minecraft <<<"*/${cron_minutes} * * * * /opt/minecraft/server/backup.sh crontab >> /opt/minecraft/server/logs/backup.log"
 chown minecraft:crontab /var/spool/cron/crontabs/minecraft
 chmod 600               /var/spool/cron/crontabs/minecraft
@@ -85,9 +142,6 @@ fi
 
   # download minecraft server fabric loader
   # https://fabricmc.net/use/server/
-  ver_mc=1.20.2
-  ver_loader=0.14.22
-  ver_launcher=0.11.2
   curl -OJ "https://meta.fabricmc.net/v2/versions/loader/${ver_mc}/${ver_loader}/${ver_launcher}/server/jar"
   rm -f server.jar
   ln -s "fabric-server-mc.${ver_mc}-loader.${ver_loader}-launcher.${ver_launcher}.jar" server.jar
