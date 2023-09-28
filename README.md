@@ -108,6 +108,7 @@ Debug
 * See the logs in `/opt/minecraft/server/logs/`
   * `tail -f /opt/minecraft/server/logs/latest.log`
 * See the logs in `journalctl --unit=MineCraft.service`
+* Reset ownership of files if you did manual changes `chown -R minecraft:minecraft /opt/minecraft/server/`
 
 Upgrade server version
 ======================
