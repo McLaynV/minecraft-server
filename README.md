@@ -17,11 +17,13 @@ Instructions
 GitHub
 ------
 
-* Fork this repo
+* Create a [new private GitHub repo](https://github.com/new) where your backups will be saved
+* Add yourself as an Admin of the repo
 * Create an access token
   * GitHub > Settings > Developer settings > Personal access tokens > [Genereate new token](https://github.com/settings/personal-access-tokens/new)
   * Token name: MineCraft
-  * Repository access: Only selected repositories: `minecraft-server`
+  * Expiration: as long as possible
+  * Repository access: Only selected repositories: (name of the repo for your backups)
   * Permissions:
     * Contents: Read and write
   * Generate token
@@ -47,11 +49,20 @@ Installation
 sudo -i
 mkdir -p /opt/minecraft/server/mods /opt/minecraft/server/config
 cd /opt/minecraft/server
-git init .
 git_repo_owner=                  # specify repo owner username
 git_repo_name=minecraft-server   # specify repo name
 git_branch_name=main             # specify branch name to be checked out and used for backups
 git_username="${git_repo_owner}" # specify your username for which you have generated the access token on GitHub
+
+# create a private fork
+git clone --bare "https://github.com/McLaynV/minecraft-server.git"
+cd minecraft-server.git
+git push --mirror "https://${git_username}@github.com/${git_repo_owner}/${git_repo_name}.git"
+cd ..
+rm -rf minecraft-server.git
+
+# initialize git
+git init .
 git remote add -t '*' -f origin "https://${git_username}@github.com/${git_repo_owner}/${git_repo_name}.git" # use the access token instead of your password
 git checkout "${git_branch_name}"
 ```
