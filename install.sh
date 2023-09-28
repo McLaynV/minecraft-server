@@ -5,13 +5,17 @@ if [[ "$(whoami)" != root ]]; then
   exit "${?}"
 fi
 
-ver_mc=1.20.2
+ver_mc=1.20.1
 ver_loader=0.14.22
 ver_launcher=0.11.2
 cron_minutes=30
 
+function Strip_Param() {
+  sed 's/^[^=]*=//'
+}
+
 for param in "${@}"; do
-  case param in
+  case "${param}" in
     '--help'|'-h'|'help')
       echo "You can use these params (with different values):"
       echo ""
@@ -25,16 +29,16 @@ for param in "${@}"; do
       exit 0
       ;;
     '--ver_mc='*)
-      mc_ver="$(sed 's/^[^=]=//' <<<"${param}")"
+      mc_ver="$(Strip_Param <<<"${param}")"
       ;;
     '--ver_loader='*)
-      ver_loader="$(sed 's/^[^=]=//' <<<"${param}")"
+      ver_loader="$(Strip_Param <<<"${param}")"
       ;;
     '--ver_launcher='*)
-      ver_launcher="$(sed 's/^[^=]=//' <<<"${param}")"
+      ver_launcher="$(Strip_Param <<<"${param}")"
       ;;
     '--cron_minutes='*)
-      cron_minutes="$(sed 's/^[^=]=//' <<<"${param}")"
+      cron_minutes="$(Strip_Param <<<"${param}")"
       if ! [[ "${cron_minutes}" =~ ^[0-9]+$ ]]; then
         echo "Not a number: ${cron_minutes}"
         exit 1
@@ -43,7 +47,7 @@ for param in "${@}"; do
     *)
       echo "Unsupported parameter: ${param}"
       echo ""
-      "${0}" --help
+      bash "${0}" --help
       exit 1
       ;;
   esac
@@ -149,8 +153,6 @@ fi
 
 chown -R minecraft:minecraft /opt/minecraft
 chmod 644 /opt/minecraft/server/*.jar
-
-# TODO: configure git credentials
 
 # install service
 ln -f -s /opt/minecraft/server/MineCraft.service /etc/systemd/system/MineCraft.service

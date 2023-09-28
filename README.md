@@ -52,21 +52,26 @@ git_repo_owner=                  # specify repo owner username
 git_repo_name=minecraft-server   # specify repo name
 git_branch_name=main             # specify branch name to be checked out and used for backups
 git_username="${git_repo_owner}" # specify your username for which you have generated the access token on GitHub
-git remote add -t '*' -f origin "https://${git_username}@github.com/${git_repo_owner}/${git_repo_name}.git"
+git remote add -t '*' -f origin "https://${git_username}@github.com/${git_repo_owner}/${git_repo_name}.git" # use the access token instead of your password
 git checkout "${git_branch_name}"
 ```
 
-* Run the installation `sudo bash install.sh [--help]`
+* Run the installation 
+  * `sudo bash install.sh [--help]`
   * Without any params default values are used
   * Run with `--help` to see the configurable params
 * Agree to the MineCraft EULA
   * `echo "eula=true" >eula.txt`
 * Initialize credentials store
   * `sudo -u minecraft /opt/minecraft/server/backup.sh init`
+  * Again use the access token instead of your password
 * Mods
   * Fabric mods are supported.
     * Download your mods into `/opt/minecraft/server/mods/` 
     * Configure them in `/opt/minecraft/server/config/`
+    * For example upload the directories in your home dir and call
+      * `rsync -a /home/${SUDO_USER}/config/* /opt/minecraft/server/config/`
+      * `rsync -a /home/${SUDO_USER}/mods/*   /opt/minecraft/server/mods/`
 * Start the service
   * `systemctl start MineCraft`
   * `systemctl status MineCraft`
@@ -90,4 +95,13 @@ Debug
 
 * See the service status by `systemctl status MineCraft`
 * See the logs in `/opt/minecraft/server/logs/`
+  * `tail -f /opt/minecraft/server/logs/latest.log`
 * See the logs in `journalctl --unit=MineCraft.service`
+
+Upgrade server version
+======================
+
+* Upgrade the versions in the `install.sh` script
+* Run the `install.sh` script again
+  * `TODO:` To be verified and debugged
+* Upgrade mods in `/opt/minecraft/server/mods/`

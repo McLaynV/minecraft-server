@@ -5,7 +5,6 @@ After=network.target
 [Service]
 User=minecraft
 Nice=1
-KillMode=none
 SuccessExitStatus=0 1
 ProtectHome=true
 ProtectSystem=full
