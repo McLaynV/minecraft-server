@@ -99,7 +99,7 @@ useradd -r -m -U -d /opt/minecraft -s /bin/bash minecraft
 
 # configure git
 chown -R minecraft:minecraft /opt/minecraft
-server_ip="$(hostname -I | head -n 1)"
+server_ip="$(hostname -I | head -n 1 | awk '{print $1}')"
 sudo -u minecraft git config --global --add safe.directory /opt/minecraft/server
 sudo -u minecraft git config --global user.email "server@${server_ip}"
 sudo -u minecraft git config --global user.name "server@${server_ip}"
